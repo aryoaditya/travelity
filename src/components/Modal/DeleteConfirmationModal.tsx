@@ -22,8 +22,8 @@ export function DeleteConfirmationModal({
   open,
   onOpenChange,
   onConfirm,
-  title = "Delete Article",
-  description = "Are you sure you want to delete this article?",
+  title = "Delete Data",
+  description = "Are you sure you want to delete this data?",
   isLoading = false,
 }: DeleteConfirmModalProps) {
   return (
