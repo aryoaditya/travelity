@@ -23,7 +23,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
             className="h-full w-56 bg-card"
             onClick={(e) => e.stopPropagation()}
           >
-            <AppSidebar />
+            <AppSidebar isMobile onNavigate={() => setIsMenuOpen(false)} />
           </div>
         </div>
       )}
