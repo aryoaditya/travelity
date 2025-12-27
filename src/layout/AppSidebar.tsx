@@ -27,7 +27,12 @@ function NavItem({ icon, label, isActive, onClick }: NavItemProps) {
   );
 }
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  isMobile?: boolean;
+  onNavigate?: () => void;
+}
+
+export function AppSidebar({ isMobile, onNavigate }: AppSidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = React.useState(false);
@@ -44,6 +49,11 @@ export function AppSidebar() {
   const isActive = (path: string) =>
     location.pathname === path || location.pathname.startsWith(path + "/");
 
+  const handleNavClick = (path: string) => {
+    navigate(path);
+    onNavigate?.();
+  };
+
   const handleLogout = () => {
     logout();
     navigate("/login");
@@ -51,7 +61,13 @@ export function AppSidebar() {
 
   return (
     <React.Fragment>
-      <aside className="fixed left-0 top-0 z-30 hidden h-screen w-56 flex-col border-r bg-card lg:flex">
+      <aside
+        className={`${
+          isMobile
+            ? "flex h-full w-full"
+            : "fixed left-0 top-0 z-30 hidden h-screen w-56 lg:flex"
+        } flex-col border-r bg-card`}
+      >
         {/* Logo */}
         <div className="flex h-16 items-center justify-center gap-2 border-b px-4">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
@@ -69,7 +85,7 @@ export function AppSidebar() {
                 icon={item.icon}
                 label={item.label}
                 isActive={isActive(item.id)}
-                onClick={() => navigate(item.id)}
+                onClick={() => handleNavClick(item.id)}
               />
             ))}
           </nav>
