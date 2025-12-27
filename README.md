@@ -1,74 +1,74 @@
-# React + TypeScript + Vite
+# Travelity
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Travelity is a modern web application designed to enhance your travel experience. It provides features such as user authentication, article feeds, category-based content, and more.
 
-Currently, two official plugins are available:
+## Project Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The project follows a modular structure for better scalability and maintainability. Below is an overview of the key directories and files:
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+public/               # Static assets
+src/                  # Source code
+  api/                # API service files
+  assets/             # Static assets for the app
+  components/         # Reusable UI components
+    Modal/            # Modal components
+    ui/               # UI primitives (buttons, inputs, etc.)
+  helper/             # Helper functions
+  layout/             # Layout components
+  lib/                # Utility libraries
+  navigation/         # Navigation components
+  screens/            # Screen components
+  store/              # Redux slices for state management
+  types/              # TypeScript type definitions
+  utils/              # Utility functions
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Frontend**: React, TypeScript
+- **State Management**: Redux Toolkit
+- **Styling**: Tailwind CSS
+- **Build Tool**: Vite
+- **UI Toolkit**: ShadCN
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-# travelity
+## Installation
+
+Follow these steps to set up the project locally:
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/aryoaditya/travelity.git
+   ```
+
+2. **Navigate to the project directory:**
+
+   ```bash
+   cd travelity
+   ```
+
+3. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+4. **Start the development server:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. **Open the application:**
+   Open your browser and navigate to the link.
+
+## Features
+
+- **Authentication**: Secure login and registration.
+- **Article Feeds**: Browse and interact with articles.
+- **Category-Based Content**: Explore content by categories.
+- **Responsive Design**: Optimized for various screen sizes.
+---
+
+Happy coding!
