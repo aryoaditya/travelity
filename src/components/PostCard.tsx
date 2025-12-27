@@ -331,7 +331,7 @@ export function PostCard({ post }: PostCardProps) {
                               }}
                               className="text-destructive focus:text-destructive"
                             >
-                              <Trash2 className="h-4 w-4 mr-2" />
+                              <Trash2 className="text-destructive h-4 w-4 mr-2" />
                               Delete
                             </DropdownMenuItem>
                           </DropdownMenuContent>
