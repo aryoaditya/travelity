@@ -38,7 +38,8 @@ export function PostCard({ post }: PostCardProps) {
             alt={post.title}
             className="aspect-video w-full object-cover"
           />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black to-transparent p-4">
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+            <h3 className="text-lg font-semibold text-white">{post.title}</h3>
             <p className="mt-1 text-sm text-white/80">{post.description}</p>
           </div>
         </div>

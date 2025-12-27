@@ -18,7 +18,7 @@ export interface ArticleItem {
   user: User;
 }
 
-export const fetchArticles = async (page = 1) => {
+export const fetchArticles = async (page = 1, query = "") => {
   const response = await http.get("/articles", {
     params: {
       "pagination[page]": page,
@@ -26,6 +26,7 @@ export const fetchArticles = async (page = 1) => {
       "populate[comments][populate][user]": "*",
       "populate[user]": "*",
       "populate[category]": "*",
+      "filters[title][$containsi]": query,
     },
   });
   return response.data.data;

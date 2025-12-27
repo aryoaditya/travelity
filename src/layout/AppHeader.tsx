@@ -2,12 +2,21 @@ import { Search, Plus, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { getUser } from "@/utils/auth";
+import { useDispatch } from "react-redux";
+import { setSearchQuery } from "@/store/searchSlice";
 
 interface HeaderProps {
   onMenuClick?: () => void;
 }
 
 export function AppHeader({ onMenuClick }: HeaderProps) {
+  const user = getUser();
+  const dispatch = useDispatch();
+
+  const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchQuery(e.target.value));
+  };
   return (
     <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b bg-card px-4 lg:px-6">
       {/* Hamburger menu button */}
@@ -26,6 +35,7 @@ export function AppHeader({ onMenuClick }: HeaderProps) {
             type="text"
             placeholder="Search articles..."
             className="w-full pl-10 bg-secondary border-0"
+            onChange={onSearchChange}
           />
         </div>
       </div>
@@ -45,7 +55,7 @@ export function AppHeader({ onMenuClick }: HeaderProps) {
               alt={"Profile Picture"}
             />
           </Avatar>
-          <p className="text-sm font-medium">Hi, Aryo Aditya</p>
+          <p className="text-sm font-medium">Hi, {user.username}</p>
         </div>
       </div>
     </header>
