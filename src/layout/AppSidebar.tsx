@@ -1,6 +1,6 @@
 import { logout } from "@/utils/auth";
 import { Home, Grid3X3, LogOut } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -25,22 +25,21 @@ function NavItem({ icon, label, isActive, onClick }: NavItemProps) {
   );
 }
 
-interface SidebarProps {
-  activeNav: string;
-  onNavChange: (nav: string) => void;
-}
-
-export function AppSidebar({ activeNav, onNavChange }: SidebarProps) {
+export function AppSidebar() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const navItems = [
-    { id: "home", icon: <Home className="h-5 w-5" />, label: "Home" },
+    { id: "/", icon: <Home className="h-5 w-5" />, label: "Home" },
     {
-      id: "categories",
+      id: "/categories",
       icon: <Grid3X3 className="h-5 w-5" />,
       label: "Categories",
     },
   ];
+
+  const isActive = (path: string) =>
+    location.pathname === path || location.pathname.startsWith(path + "/");
 
   const handleLogout = () => {
     logout();
@@ -65,8 +64,8 @@ export function AppSidebar({ activeNav, onNavChange }: SidebarProps) {
               key={item.id}
               icon={item.icon}
               label={item.label}
-              isActive={activeNav === item.id}
-              onClick={() => onNavChange(item.id)}
+              isActive={isActive(item.id)}
+              onClick={() => navigate(item.id)}
             />
           ))}
         </nav>

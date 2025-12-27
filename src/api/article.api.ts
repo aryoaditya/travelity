@@ -25,17 +25,29 @@ export interface ArticleCreateUpdateDto {
   category: number;
 }
 
-export const fetchArticles = async (page = 1, query = "") => {
-  const response = await http.get("/articles", {
-    params: {
-      "pagination[page]": page,
-      "pagination[pageSize]": 10,
-      "populate[comments][populate][user]": "*",
-      "populate[user]": "*",
-      "populate[category]": "*",
-      "filters[title][$containsi]": query,
-    },
-  });
+export const fetchArticles = async (
+  page = 1,
+  pageSize = 10,
+  query = "",
+  category = ""
+) => {
+  const params: any = {
+    "pagination[page]": page,
+    "pagination[pageSize]": pageSize,
+    "populate[comments][populate][user]": "*",
+    "populate[user]": "*",
+    "populate[category]": "*",
+  };
+
+  if (query) {
+    params["filters[title][$containsi]"] = query;
+  }
+  if (category) {
+    params["filters[category][name][$eqi]"] = category;
+  }
+
+  const response = await http.get("/articles", { params });
+
   return response.data.data;
 };
 

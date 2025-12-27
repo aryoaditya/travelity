@@ -3,6 +3,7 @@ import Homepage from "../screens/Index";
 import LoginScreen from "@/screens/LoginScreen";
 import RegisterScreen from "@/screens/RegisterScreen";
 import ProtectedRoute from "./ProtectedRoute";
+import CategoryScreen from "@/screens/CategoryScreen";
 
 const RootNavigator = () => (
   <BrowserRouter>
@@ -12,6 +13,14 @@ const RootNavigator = () => (
         element={
           <ProtectedRoute>
             <Homepage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/categories"
+        element={
+          <ProtectedRoute>
+            <CategoryScreen />
           </ProtectedRoute>
         }
       />

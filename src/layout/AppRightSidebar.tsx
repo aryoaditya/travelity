@@ -1,10 +1,30 @@
 import { fetchCategories, type CategoryItem } from "@/api/category.api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { RootState } from "@/store";
+import {
+  clearSelectedCategory,
+  setSelectedCategory,
+} from "@/store/categorySlice";
+import { clearSearchQuery } from "@/store/searchSlice";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+const categoryColors = [
+  "bg-sky-500/20 hover:bg-sky-500/30",
+  "bg-orange-500/20 hover:bg-orange-500/30",
+  "bg-violet-500/20 hover:bg-violet-500/30",
+  "bg-emerald-500/20 hover:bg-emerald-500/30",
+  "bg-pink-500/20 hover:bg-pink-500/30",
+];
 
 export function AppRightSidebar() {
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const selectedCategory = useSelector(
+    (state: RootState) => state.category.selectedCategory
+  );
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -23,6 +43,16 @@ export function AppRightSidebar() {
     loadCategories();
   }, []);
 
+  const handleCategoryClick = (categoryName: string) => {
+    dispatch(clearSearchQuery());
+
+    if (selectedCategory === categoryName) {
+      dispatch(clearSelectedCategory());
+    } else {
+      dispatch(setSelectedCategory(categoryName));
+    }
+  };
+
   return (
     <aside className="hidden w-72 space-y-4 xl:block">
       {/* Categories Card */}
@@ -38,17 +68,14 @@ export function AppRightSidebar() {
               {categories.map((category, index) => (
                 <button
                   key={category.documentId}
-                  className={`flex w-full items-center justify-between rounded-lg p-3 transition-colors ${
-                    index === 0
-                      ? "bg-[hsl(199_89%_48%/20%)]"
-                      : index === 1
-                        ? "bg-[hsl(25_95%_53%/20%)]"
-                        : index === 2
-                          ? "bg-[hsl(262_83%_58%/20%)]"
-                          : index === 3
-                            ? "bg-[hsl(142_71%_45%/20%)]"
-                            : "bg-[hsl(330_81%_60%/20%)]"
-                  } hover:bg-muted`}
+                  onClick={() => handleCategoryClick(category.name)}
+                  className={`flex w-full items-center justify-between rounded-lg p-3 transition-all duration-200 ${
+                    categoryColors[index % categoryColors.length]
+                  } ${
+                    selectedCategory === category.name
+                      ? "ring-2 ring-primary ring-offset-2"
+                      : ""
+                  }`}
                 >
                   <div className="flex items-center min-w-0">
                     <p className="text-sm text-left font-medium">
@@ -59,9 +86,12 @@ export function AppRightSidebar() {
               ))}
             </>
           )}
-          <button className="mt-2 text-sm font-medium text-primary hover:underline">
+          <Link
+            to="/categories"
+            className="mt-2 block text-sm font-medium text-primary hover:underline"
+          >
             View All &gt;
-          </button>
+          </Link>
         </CardContent>
       </Card>
     </aside>
