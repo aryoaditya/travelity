@@ -11,7 +11,15 @@ export interface CategoryItem {
   locale: string | null;
 }
 
-export const fetchCategories = async () => {
-  const response = await http.get("/categories");
+export const fetchCategories = async (page = 1, pageSize?: number) => {
+  const params: any = {
+    "pagination[page]": page,
+  };
+
+  if (pageSize !== undefined) {
+    params["pagination[pageSize]"] = pageSize;
+  }
+
+  const response = await http.get("/categories", { params });
   return response.data.data;
 };

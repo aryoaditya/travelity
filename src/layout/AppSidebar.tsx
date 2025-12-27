@@ -1,5 +1,5 @@
 import { logout } from "@/utils/auth";
-import { Home, Grid3X3, FileText, LogOut } from "lucide-react";
+import { Home, Grid3X3, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface NavItemProps {
@@ -39,11 +39,6 @@ export function AppSidebar({ activeNav, onNavChange }: SidebarProps) {
       id: "categories",
       icon: <Grid3X3 className="h-5 w-5" />,
       label: "Categories",
-    },
-    {
-      id: "my-articles",
-      icon: <FileText className="h-5 w-5" />,
-      label: "My Articles",
     },
   ];
 
