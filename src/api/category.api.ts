@@ -1,3 +1,5 @@
+import { http } from "./http";
+
 export interface CategoryItem {
   id: number;
   documentId: string;
@@ -8,3 +10,8 @@ export interface CategoryItem {
   publishedAt: string;
   locale: string | null;
 }
+
+export const fetchCategories = async () => {
+  const response = await http.get("/categories");
+  return response.data.data;
+};

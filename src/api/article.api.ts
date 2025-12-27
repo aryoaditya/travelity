@@ -18,6 +18,13 @@ export interface ArticleItem {
   user: User;
 }
 
+export interface ArticleCreateUpdateDto {
+  title: string;
+  description: string;
+  cover_image_url: string;
+  category: number;
+}
+
 export const fetchArticles = async (page = 1, query = "") => {
   const response = await http.get("/articles", {
     params: {
@@ -38,7 +45,7 @@ export const fetchArticleById = async (id: string): Promise<ArticleItem> => {
 };
 
 export const createArticle = async (
-  data: ArticleItem
+  data: ArticleCreateUpdateDto
 ): Promise<ArticleItem> => {
   const res = await http.post("/articles", {
     data,
@@ -48,7 +55,7 @@ export const createArticle = async (
 
 export const updateArticle = async (
   id: string,
-  data: ArticleItem
+  data: ArticleCreateUpdateDto
 ): Promise<ArticleItem> => {
   const res = await http.put(`/articles/${id}`, {
     data,

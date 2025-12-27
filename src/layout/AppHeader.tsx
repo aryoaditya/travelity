@@ -5,6 +5,8 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { getUser } from "@/utils/auth";
 import { useDispatch } from "react-redux";
 import { setSearchQuery } from "@/store/searchSlice";
+import { useState } from "react";
+import { ArticleFormModal } from "@/components/Modal/ArticleFormModal";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -13,6 +15,7 @@ interface HeaderProps {
 export function AppHeader({ onMenuClick }: HeaderProps) {
   const user = getUser();
   const dispatch = useDispatch();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchQuery(e.target.value));
@@ -42,7 +45,7 @@ export function AppHeader({ onMenuClick }: HeaderProps) {
 
       <div className="flex items-center gap-3">
         {/* Create Button */}
-        <Button className="gap-2">
+        <Button onClick={() => setIsCreateModalOpen(true)} className="gap-2">
           <Plus className="h-4 w-4" />
           <span className="hidden sm:inline">Create Article</span>
         </Button>
@@ -58,6 +61,12 @@ export function AppHeader({ onMenuClick }: HeaderProps) {
           <p className="text-sm font-medium">Hi, {user.username}</p>
         </div>
       </div>
+
+      <ArticleFormModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
+        mode="create"
+      />
     </header>
   );
 }
