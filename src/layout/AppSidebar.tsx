@@ -1,4 +1,6 @@
+import { logout } from "@/utils/auth";
 import { Home, Grid3X3, FileText, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface NavItemProps {
   icon: React.ReactNode;
@@ -29,6 +31,8 @@ interface SidebarProps {
 }
 
 export function AppSidebar({ activeNav, onNavChange }: SidebarProps) {
+  const navigate = useNavigate();
+
   const navItems = [
     { id: "home", icon: <Home className="h-5 w-5" />, label: "Home" },
     {
@@ -41,12 +45,12 @@ export function AppSidebar({ activeNav, onNavChange }: SidebarProps) {
       icon: <FileText className="h-5 w-5" />,
       label: "My Articles",
     },
-    {
-      id: "logout",
-      icon: <LogOut className="h-5 w-5" />,
-      label: "Logout",
-    },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
     <aside className="fixed left-0 top-0 z-30 hidden h-screen w-56 flex-col border-r bg-card lg:flex">
@@ -59,17 +63,28 @@ export function AppSidebar({ activeNav, onNavChange }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 p-3">
-        {navItems.map((item) => (
-          <NavItem
-            key={item.id}
-            icon={item.icon}
-            label={item.label}
-            isActive={activeNav === item.id}
-            onClick={() => onNavChange(item.id)}
-          />
-        ))}
-      </nav>
+      <div className="flex flex-col h-full">
+        <nav className="flex flex-col space-y-2">
+          {navItems.map((item) => (
+            <NavItem
+              key={item.id}
+              icon={item.icon}
+              label={item.label}
+              isActive={activeNav === item.id}
+              onClick={() => onNavChange(item.id)}
+            />
+          ))}
+        </nav>
+
+        {/* Logout button */}
+        <button
+          onClick={handleLogout}
+          className="mt-2 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors text-muted-foreground hover:bg-muted hover:text-foreground"
+        >
+          <LogOut className="h-5 w-5" />
+          <span>Logout</span>
+        </button>
+      </div>
     </aside>
   );
 }
