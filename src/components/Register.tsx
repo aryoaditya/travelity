@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { register as registerUser } from "@/api/auth.api";
 
 const registerSchema = z
   .object({
@@ -39,14 +40,23 @@ const Register = () => {
     resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit = (data: RegisterFormValues) => {
+  const onSubmit = async (data: RegisterFormValues) => {
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await registerUser(data.username, data.email, data.password);
+
       toast.success("Your account has been successfully created");
       navigate("/login");
-    }, 1000);
+    } catch (err: any) {
+      const message =
+        err.response?.data?.error?.message ||
+        "Registration failed, please try again";
+
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useState } from "react";
+import { login } from "@/api/auth.api";
+import { saveAuth } from "@/utils/auth";
 
 const loginSchema = z.object({
   identifier: z
@@ -38,19 +40,49 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    setIsLoading(true);
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      setIsLoading(true);
 
-    setTimeout(() => {
+      const loginRes = await login(data.identifier, data.password);
+      const token = loginRes.jwt;
+
+      const profile = loginRes.user;
+
+      if (profile) {
+        saveAuth(token, profile);
+
+        toast.success("Login successful");
+        navigate("/");
+      }
+    } catch (err: any) {
+      const message =
+        err.response?.data?.error?.message ||
+        "Invalid credentials, please try again";
+
+      toast.error(message);
+    } finally {
       setIsLoading(false);
-      toast.success("Welcome to Travelity!");
-      navigate("/");
-    }, 1000);
+    }
   };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center gap-2 mb-2">
+            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+              <span className="text-xl font-bold text-primary-foreground">
+                T
+              </span>
+            </div>
+            <span className="text-2xl font-bold text-foreground">
+              Travelity
+            </span>
+          </div>
+        </div>
+
         <Card>
           <CardHeader>
             <h2 className="text-xl font-semibold text-center">Welcome!</h2>
