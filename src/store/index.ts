@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import searchReducer from "./searchSlice";
 import categoryReducer from "./categorySlice";
+import articleReducer from "./articleSlice";
 
 export const store = configureStore({
   reducer: {
     search: searchReducer,
     category: categoryReducer,
+    article: articleReducer,
   },
 });
 

@@ -28,6 +28,8 @@ import { getUser } from "@/utils/auth";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { createComment, deleteComment, updateComment } from "@/api/comment.api";
+import { useDispatch } from "react-redux";
+import { triggerRefetch } from "@/store/articleSlice";
 
 interface PostCardProps {
   post: Post;
@@ -51,6 +53,7 @@ export function PostCard({ post }: PostCardProps) {
   const [isCommentDeleteModalOpen, setIsCommentDeleteModalOpen] =
     useState(false);
   const user = getUser();
+  const dispatch = useDispatch();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -58,6 +61,7 @@ export function PostCard({ post }: PostCardProps) {
       await deleteArticle(post.documentId);
       toast.success("Article deleted successfully");
       setIsDeleteModalOpen(false);
+      dispatch(triggerRefetch());
     } catch (error: any) {
       const message =
         error.response?.data?.error?.message || "Failed to delete article";

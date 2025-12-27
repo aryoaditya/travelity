@@ -27,6 +27,9 @@ import {
   updateArticle,
   type ArticleCreateUpdateDto,
 } from "@/api/article.api";
+import { SpinnerCustom } from "../ui/spinner";
+import { useDispatch } from "react-redux";
+import { triggerRefetch } from "@/store/articleSlice";
 
 const articleSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -63,6 +66,7 @@ export function ArticleFormModal({
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string>("");
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -143,6 +147,7 @@ export function ArticleFormModal({
       }
 
       onOpenChange(false);
+      dispatch(triggerRefetch());
     } catch (error: any) {
       const message =
         error.response?.data?.error?.message || "Failed to save article";
@@ -251,11 +256,15 @@ export function ArticleFormModal({
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading
-              ? "Saving..."
-              : mode === "create"
-                ? "Create Article"
-                : "Update Article"}
+            {isLoading ? (
+              <div className="flex justify-center items-center">
+                <SpinnerCustom className="size-4 text-white" />
+              </div>
+            ) : mode === "create" ? (
+              "Create Article"
+            ) : (
+              "Update Article"
+            )}
           </Button>
         </form>
       </DialogContent>

@@ -18,6 +18,9 @@ export default function HomeFeeds() {
   const selectedCategory = useSelector(
     (state: RootState) => state.category.selectedCategory
   );
+  const refetchTrigger = useSelector(
+    (state: RootState) => state.article.refetchTrigger
+  );
 
   const pageRef = useRef(1);
   const loadingRef = useRef(false);
@@ -84,7 +87,7 @@ export default function HomeFeeds() {
     currentCategoryRef.current = selectedCategory;
 
     loadArticles(true);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, refetchTrigger]);
 
   // Infinite scroll
   useEffect(() => {
