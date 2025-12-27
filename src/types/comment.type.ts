@@ -1,3 +1,5 @@
+import type { User } from "./user.type";
+
 export interface Comment {
   id: number;
   documentId: string;
@@ -5,4 +7,5 @@ export interface Comment {
   createdAt: string;
   updatedAt: string;
   timeAgo: string;
+  user: User;
 }

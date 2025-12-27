@@ -4,6 +4,7 @@ import { PostCard } from "@/components/PostCard";
 import { fetchArticles } from "@/api/article.api";
 import type { RootState } from "@/store";
 import { useSelector } from "react-redux";
+import { timeAgoFormatter } from "@/helper/timeAgoFormatter";
 
 export default function HomeFeeds() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -14,17 +15,6 @@ export default function HomeFeeds() {
   const pageRef = useRef(1);
   const loadingRef = useRef(false);
   const currentQueryRef = useRef(searchQuery);
-
-  // Time Ago Formatter
-  const timeAgoFormatter = (dateStr: string) => {
-    const diffMs = Date.now() - new Date(dateStr).getTime();
-    const diffMins = Math.floor(diffMs / 60000);
-    if (diffMins < 60) return `${diffMins} minutes ago`;
-    const diffHours = Math.floor(diffMins / 60);
-    if (diffHours < 24) return `${diffHours} hours ago`;
-    const diffDays = Math.floor(diffHours / 24);
-    return `${diffDays} days ago`;
-  };
 
   const loadArticles = useCallback(
     async (isReset: boolean = false) => {
