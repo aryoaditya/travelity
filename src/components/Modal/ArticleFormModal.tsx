@@ -114,7 +114,7 @@ export function ArticleFormModal({
 
   const loadCategories = async () => {
     try {
-      const data = await fetchCategories();
+      const data = await fetchCategories(1, 100);
       setCategories(data);
     } catch (error: any) {
       const message =
