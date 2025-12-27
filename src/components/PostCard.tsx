@@ -23,6 +23,7 @@ import { deleteArticle } from "@/api/article.api";
 import { toast } from "sonner";
 import { ArticleFormModal } from "./Modal/ArticleFormModal";
 import { DeleteConfirmationModal } from "./Modal/DeleteConfirmationModal";
+import { getUser } from "@/utils/auth";
 
 interface PostCardProps {
   post: Post;
@@ -34,6 +35,7 @@ export function PostCard({ post }: PostCardProps) {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const user = getUser();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -68,26 +70,28 @@ export function PostCard({ post }: PostCardProps) {
               <p className="text-xs text-muted-foreground">{post.timeAgo}</p>
             </div>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="rounded-lg p-1 hover:bg-muted">
-                <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setIsEditModalOpen(true)}>
-                <Pencil className="h-4 w-4 mr-2" />
-                Edit Article
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() => setIsDeleteModalOpen(true)}
-                className="text-destructive focus:text-destructive"
-              >
-                <Trash2 className="text-destructive h-4 w-4 mr-2" />
-                Delete Article
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {user.id === post.user.id && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="rounded-lg p-1 hover:bg-muted">
+                  <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setIsEditModalOpen(true)}>
+                  <Pencil className="h-4 w-4 mr-2" />
+                  Edit Article
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  className="text-destructive focus:text-destructive"
+                >
+                  <Trash2 className="text-destructive h-4 w-4 mr-2" />
+                  Delete Article
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
 
         {/* Image */}
