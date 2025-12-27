@@ -34,7 +34,7 @@ export function AppHeader({ onMenuClick }: HeaderProps) {
         {/* Create Button */}
         <Button className="gap-2">
           <Plus className="h-4 w-4" />
-          <span className="hidden sm:inline">Create</span>
+          <span className="hidden sm:inline">Create Article</span>
         </Button>
 
         {/* User Profile */}
