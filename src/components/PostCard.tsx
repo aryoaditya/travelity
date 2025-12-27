@@ -3,14 +3,26 @@ import {
   ChevronUp,
   MessageSquare,
   MoreHorizontal,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Post } from "@/types/post.type";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { timeAgoFormatter } from "@/helper/timeAgoFormatter";
 import type { Comment } from "@/types/comment.type";
+import { deleteArticle } from "@/api/article.api";
+import { toast } from "sonner";
+import { ArticleFormModal } from "./Modal/ArticleFormModal";
+import { DeleteConfirmationModal } from "./Modal/DeleteConfirmationModal";
 
 interface PostCardProps {
   post: Post;
@@ -19,6 +31,25 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isCommentsExpanded, setIsCommentsExpanded] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await deleteArticle(post.documentId);
+      toast.success("Article deleted successfully");
+      setIsDeleteModalOpen(false);
+    } catch (error: any) {
+      const message =
+        error.response?.data?.error?.message || "Failed to delete article";
+
+      toast.error(message);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <Card className="shadow-soft overflow-hidden">
@@ -37,9 +68,26 @@ export function PostCard({ post }: PostCardProps) {
               <p className="text-xs text-muted-foreground">{post.timeAgo}</p>
             </div>
           </div>
-          <button className="rounded-lg p-1 hover:bg-muted">
-            <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="rounded-lg p-1 hover:bg-muted">
+                <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setIsEditModalOpen(true)}>
+                <Pencil className="h-4 w-4 mr-2" />
+                Edit Article
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="text-destructive h-4 w-4 mr-2" />
+                Delete Article
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {/* Image */}
@@ -132,6 +180,28 @@ export function PostCard({ post }: PostCardProps) {
             )}
           </div>
         )}
+
+        {/* Edit Modal */}
+        <ArticleFormModal
+          open={isEditModalOpen}
+          onOpenChange={setIsEditModalOpen}
+          mode="edit"
+          initialData={{
+            documentId: post.documentId,
+            title: post.title,
+            description: post.description,
+            cover_image_url: post.image,
+            category: post.category?.id,
+          }}
+        />
+
+        {/* Delete Confirmation Modal */}
+        <DeleteConfirmationModal
+          open={isDeleteModalOpen}
+          onOpenChange={setIsDeleteModalOpen}
+          onConfirm={handleDelete}
+          isLoading={isDeleting}
+        />
       </CardContent>
     </Card>
   );

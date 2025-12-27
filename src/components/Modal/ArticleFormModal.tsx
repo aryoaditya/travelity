@@ -118,10 +118,9 @@ export function ArticleFormModal({
       setCategories(data);
     } catch (error: any) {
       const message =
-        error.response?.data?.error?.message ||
-        "Invalid credentials, please try again";
+        error.response?.data?.error?.message || "Failed to load categories";
 
-      toast.error(message || "Failed to load categories");
+      toast.error(message);
     }
   };
 
@@ -146,8 +145,7 @@ export function ArticleFormModal({
       onOpenChange(false);
     } catch (error: any) {
       const message =
-        error.response?.data?.error?.message ||
-        "Invalid credentials, please try again";
+        error.response?.data?.error?.message || "Failed to save article";
 
       toast.error(message);
     } finally {
