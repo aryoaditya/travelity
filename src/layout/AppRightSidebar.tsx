@@ -1,5 +1,6 @@
 import { fetchCategories, type CategoryItem } from "@/api/category.api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import type { RootState } from "@/store";
 import {
   clearSelectedCategory,
@@ -62,7 +63,9 @@ export function AppRightSidebar() {
         </CardHeader>
         <CardContent className="space-y-2">
           {loading ? (
-            <p className="text-sm text-muted-foreground">Loading...</p>
+            <div className="flex justify-center">
+              <SpinnerCustom className="size-6" />
+            </div>
           ) : (
             <>
               {categories.map((category, index) => (

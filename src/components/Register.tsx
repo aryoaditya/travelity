@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { register as registerUser } from "@/api/auth.api";
+import { SpinnerCustom } from "./ui/spinner";
 
 const registerSchema = z
   .object({
@@ -172,7 +173,13 @@ const Register = () => {
                 className="w-full mt-8"
                 disabled={isLoading}
               >
-                {isLoading ? "Wait..." : "Sign Up"}
+                {isLoading ? (
+                  <div className="flex justify-center items-center">
+                    <SpinnerCustom className="size-4 text-white" />
+                  </div>
+                ) : (
+                  "Sign Up"
+                )}
               </Button>
             </form>
 

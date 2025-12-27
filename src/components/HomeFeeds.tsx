@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { timeAgoFormatter } from "@/helper/timeAgoFormatter";
 import { clearSelectedCategory } from "@/store/categorySlice";
 import { X } from "lucide-react";
+import { SpinnerCustom } from "./ui/spinner";
 
 export default function HomeFeeds() {
   const dispatch = useDispatch();
@@ -115,7 +116,12 @@ export default function HomeFeeds() {
     return "No articles found";
   };
 
-  if (posts.length === 0 && loading) return <p>Loading articles...</p>;
+  if (posts.length === 0 && loading)
+    return (
+      <div className="flex flex-1 h-full justify-center items-center">
+        <SpinnerCustom className="size-10" />
+      </div>
+    );
   if (posts.length === 0 && !loading) {
     return <p className="text-muted-foreground">{getEmptyMessage()}</p>;
   }
@@ -142,7 +148,12 @@ export default function HomeFeeds() {
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
-      {loading && <p className="text-center mt-4">Loading more articles...</p>}
+      {loading && (
+        <div className="flex flex-col justify-center items-center">
+          <SpinnerCustom className="size-10" />
+          <p className="text-center mt-4">Loading more articles...</p>
+        </div>
+      )}
       {!hasMore && posts.length > 0 && (
         <p className="text-center mt-4 text-muted-foreground">
           No more articles

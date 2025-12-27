@@ -29,7 +29,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
       )}
 
       {/* Main Content */}
-      <div className="lg:ml-56">
+      <div className="lg:ml-56 pb-16">
         <AppHeader onMenuClick={() => setIsMenuOpen(true)} />
 
         <div className="flex gap-6 p-4 lg:p-6">

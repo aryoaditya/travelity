@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { SpinnerCustom } from "../ui/spinner";
 
 interface DeleteConfirmModalProps {
   open: boolean;
@@ -40,7 +41,13 @@ export function DeleteConfirmationModal({
             disabled={isLoading}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {isLoading ? "Deleting..." : "Delete"}
+            {isLoading ? (
+              <div className="flex justify-center items-center">
+                <SpinnerCustom className="size-4 text-white" />
+              </div>
+            ) : (
+              "Delete"
+            )}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

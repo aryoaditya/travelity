@@ -11,6 +11,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { login } from "@/api/auth.api";
 import { saveAuth } from "@/utils/auth";
+import { SpinnerCustom } from "./ui/spinner";
 
 const loginSchema = z.object({
   identifier: z
@@ -137,7 +138,13 @@ const Login = () => {
                 className="w-full mt-6"
                 disabled={isLoading}
               >
-                {isLoading ? "Wait..." : "Login"}
+                {isLoading ? (
+                  <div className="flex justify-center items-center">
+                    <SpinnerCustom className="size-4 text-white" />
+                  </div>
+                ) : (
+                  "Login"
+                )}
               </Button>
             </form>
 
