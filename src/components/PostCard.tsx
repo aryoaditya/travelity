@@ -23,7 +23,7 @@ import type { Comment } from "@/types/comment.type";
 import { deleteArticle } from "@/api/article.api";
 import { toast } from "sonner";
 import { ArticleFormModal } from "./Modal/ArticleFormModal";
-import { DeleteConfirmationModal } from "./Modal/DeleteConfirmationModal";
+import { ConfirmationModal } from "./Modal/ConfirmationModal";
 import { getUser } from "@/utils/auth";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
@@ -394,7 +394,7 @@ export function PostCard({ post }: PostCardProps) {
         />
 
         {/* Delete Confirmation Modal */}
-        <DeleteConfirmationModal
+        <ConfirmationModal
           open={isDeleteModalOpen}
           onOpenChange={setIsDeleteModalOpen}
           onConfirm={handleDelete}
@@ -403,7 +403,7 @@ export function PostCard({ post }: PostCardProps) {
           description="Are you sure you want to delete this article?"
         />
 
-        <DeleteConfirmationModal
+        <ConfirmationModal
           open={isCommentDeleteModalOpen}
           onOpenChange={setIsCommentDeleteModalOpen}
           onConfirm={handleDeleteComment}

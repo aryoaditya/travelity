@@ -17,13 +17,15 @@ interface DeleteConfirmModalProps {
   title?: string;
   description?: string;
   isLoading?: boolean;
+  confirmButtonText?: string;
 }
 
-export function DeleteConfirmationModal({
+export function ConfirmationModal({
   open,
   onOpenChange,
   onConfirm,
   title = "Delete Data",
+  confirmButtonText = "Delete",
   description = "Are you sure you want to delete this data?",
   isLoading = false,
 }: DeleteConfirmModalProps) {
@@ -46,7 +48,7 @@ export function DeleteConfirmationModal({
                 <SpinnerCustom className="size-4 text-white" />
               </div>
             ) : (
-              "Delete"
+              confirmButtonText
             )}
           </AlertDialogAction>
         </AlertDialogFooter>
