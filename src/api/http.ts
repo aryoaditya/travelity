@@ -9,6 +9,10 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
+  if (config.url?.includes("/auth/local")) {
+    return config;
+  }
+
   const token = getToken();
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
