@@ -13,13 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { fetchCategories, type CategoryItem } from "@/api/category.api";
+  createCategory,
+  fetchCategories,
+  type CategoryItem,
+} from "@/api/category.api";
 import { toast } from "sonner";
 import { ImagePlus } from "lucide-react";
 import {
@@ -30,6 +27,7 @@ import {
 import { SpinnerCustom } from "../ui/spinner";
 import { useDispatch } from "react-redux";
 import { triggerRefetch } from "@/store/articleSlice";
+import { CategoryDropdown } from "../CategoryDropdown";
 
 const articleSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -66,6 +64,8 @@ export function ArticleFormModal({
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string>("");
+  const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(false);
   const dispatch = useDispatch();
 
   const {
@@ -73,7 +73,6 @@ export function ArticleFormModal({
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
     watch,
   } = useForm<ArticleFormData>({
     resolver: zodResolver(articleSchema),
@@ -117,6 +116,7 @@ export function ArticleFormModal({
   }, [open, mode, initialData, reset]);
 
   const loadCategories = async () => {
+    setIsLoadingCategories(true);
     try {
       const data = await fetchCategories(1, 100);
       setCategories(data);
@@ -124,6 +124,21 @@ export function ArticleFormModal({
       const message =
         error.response?.data?.error?.message || "Failed to load categories";
 
+      toast.error(message);
+    } finally {
+      setIsLoadingCategories(false);
+    }
+  };
+
+  const handleCreateCategory = async (name: string) => {
+    try {
+      const newCategory = await createCategory({ name });
+      setCategories((prev) => [...prev, newCategory]);
+
+      return newCategory;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.error?.message || "Failed to create category";
       toast.error(message);
     }
   };
@@ -232,27 +247,16 @@ export function ArticleFormModal({
 
           {/* Category */}
           <div className="space-y-2">
-            <Label htmlFor="category">Category</Label>
-            <Select
-              onValueChange={(value) => setValue("category", value)}
-              defaultValue={initialData?.category?.toString()}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories.map((cat) => (
-                  <SelectItem key={cat.id} value={cat.id.toString()}>
-                    {cat.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            {errors.category && (
-              <p className="text-sm text-destructive">
-                {errors.category.message}
-              </p>
-            )}
+            <Label className="text-sm font-medium text-foreground">
+              Category <span className="text-destructive">*</span>
+            </Label>
+            <CategoryDropdown
+              categories={categories}
+              value={categoryId}
+              onChange={setCategoryId}
+              onCreateCategory={handleCreateCategory}
+              isLoading={isLoadingCategories}
+            />
           </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
