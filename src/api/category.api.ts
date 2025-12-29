@@ -23,3 +23,12 @@ export const fetchCategories = async (page = 1, pageSize?: number) => {
   const response = await http.get("/categories", { params });
   return response.data.data;
 };
+
+export const createCategory = async (data: {
+  name: string;
+}): Promise<CategoryItem> => {
+  const res = await http.post("/categories", {
+    data,
+  });
+  return res.data.data;
+};
