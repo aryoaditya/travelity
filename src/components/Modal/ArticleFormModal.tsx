@@ -74,6 +74,7 @@ export function ArticleFormModal({
     formState: { errors },
     reset,
     watch,
+    setValue,
   } = useForm<ArticleFormData>({
     resolver: zodResolver(articleSchema),
     defaultValues: {
@@ -114,6 +115,12 @@ export function ArticleFormModal({
       }
     }
   }, [open, mode, initialData, reset]);
+
+  useEffect(() => {
+    if (categoryId !== null) {
+      setValue("category", String(categoryId), { shouldValidate: true });
+    }
+  }, [categoryId, setValue]);
 
   const loadCategories = async () => {
     setIsLoadingCategories(true);
@@ -246,6 +253,7 @@ export function ArticleFormModal({
           </div>
 
           {/* Category */}
+          <input type="hidden" {...register("category")} />
           <div className="space-y-2">
             <Label className="text-sm font-medium text-foreground">
               Category <span className="text-destructive">*</span>
